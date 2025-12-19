@@ -1,0 +1,24 @@
+[0.591s] Invoking command in '/home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection': PS1=(Localization) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/lib/python3.10/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(Localization) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/build --no-deps symlink_data
+[0.801s] running develop
+[0.962s] running egg_info
+[0.962s] creating landmarks_detection.egg-info
+[0.963s] writing landmarks_detection.egg-info/PKG-INFO
+[0.963s] writing dependency_links to landmarks_detection.egg-info/dependency_links.txt
+[0.963s] writing entry points to landmarks_detection.egg-info/entry_points.txt
+[0.963s] writing requirements to landmarks_detection.egg-info/requires.txt
+[0.963s] writing top-level names to landmarks_detection.egg-info/top_level.txt
+[0.965s] writing manifest file 'landmarks_detection.egg-info/SOURCES.txt'
+[0.966s] reading manifest file 'landmarks_detection.egg-info/SOURCES.txt'
+[0.966s] writing manifest file 'landmarks_detection.egg-info/SOURCES.txt'
+[0.967s] running build_ext
+[0.967s] Creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/lib/python3.10/site-packages/landmarks-detection.egg-link (link to .)
+[0.968s] Installing detector script to /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/lib/landmarks_detection
+[0.968s] 
+[0.968s] Installed /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection
+[0.968s] running symlink_data
+[0.968s] creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index
+[0.968s] creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index/resource_index
+[0.968s] creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index/resource_index/packages
+[0.968s] symbolically linking /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/resource/landmarks_detection -> /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index/resource_index/packages
+[0.968s] symbolically linking /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/package.xml -> /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/landmarks_detection
+[0.987s] Invoked command in '/home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection' returned '0': PS1=(Localization) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/lib/python3.10/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(Localization) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/build --no-deps symlink_data

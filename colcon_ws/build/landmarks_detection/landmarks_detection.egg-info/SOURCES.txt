@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+landmarks_detection/__init__.py
+landmarks_detection/detector_node.py
+landmarks_detection.egg-info/PKG-INFO
+landmarks_detection.egg-info/SOURCES.txt
+landmarks_detection.egg-info/dependency_links.txt
+landmarks_detection.egg-info/entry_points.txt
+landmarks_detection.egg-info/requires.txt
+landmarks_detection.egg-info/top_level.txt
+landmarks_detection.egg-info/zip-safe
+resource/landmarks_detection

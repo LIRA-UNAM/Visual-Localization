@@ -1,0 +1,22 @@
+running develop
+running egg_info
+creating landmarks_detection.egg-info
+writing landmarks_detection.egg-info/PKG-INFO
+writing dependency_links to landmarks_detection.egg-info/dependency_links.txt
+writing entry points to landmarks_detection.egg-info/entry_points.txt
+writing requirements to landmarks_detection.egg-info/requires.txt
+writing top-level names to landmarks_detection.egg-info/top_level.txt
+writing manifest file 'landmarks_detection.egg-info/SOURCES.txt'
+reading manifest file 'landmarks_detection.egg-info/SOURCES.txt'
+writing manifest file 'landmarks_detection.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/lib/python3.10/site-packages/landmarks-detection.egg-link (link to .)
+Installing detector script to /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/lib/landmarks_detection
+
+Installed /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection
+running symlink_data
+creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index
+creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index/resource_index
+creating /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index/resource_index/packages
+symbolically linking /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/resource/landmarks_detection -> /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/ament_index/resource_index/packages
+symbolically linking /home/roboworks/Visual-Localization/colcon_ws/build/landmarks_detection/package.xml -> /home/roboworks/Visual-Localization/colcon_ws/install/landmarks_detection/share/landmarks_detection
