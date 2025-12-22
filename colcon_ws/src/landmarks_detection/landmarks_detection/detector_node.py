@@ -10,13 +10,17 @@ import torchvision.transforms as T
 import cv2
 import sys
 from pathlib import Path
+import os
 
-# -----------------------
-# Deformable-DETR import
-# -----------------------
-DETR_ROOT = Path("/home/roboworks/Deformable-DETR")
+DETR_ROOT = os.environ.get("DETR_ROOT")
+if DETR_ROOT is None:
+    raise RuntimeError(
+        "DETR_ROOT environment variable is not set. "
+        "Please export DETR_ROOT=/path/to/Deformable-DETR"
+    )
+
+DETR_ROOT = Path(DETR_ROOT)
 sys.path.insert(0, str(DETR_ROOT))
-print(sys.path)
 from models import build_model
 from util.misc import nested_tensor_from_tensor_list
 
