@@ -19,7 +19,7 @@ If the shebang points to a different Python version, edit the first line of the 
 ```
 Visual-Localization/colcon_ws/install/landmarks_detection/lib/landmarks_detection/detector
 ```
-abd replace it with:
+and replace it with:
 ```
 #!/path/to/your/venv/bin/python
 ```
