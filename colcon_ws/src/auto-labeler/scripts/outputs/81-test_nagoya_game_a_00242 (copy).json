@@ -1,0 +1,105 @@
+{
+  "imageHeight": 600,
+  "imageWidth": 800,
+  "shapes": [
+    {
+      "label": "ball",
+      "points": [
+        [
+          170,
+          59
+        ],
+        [
+          209,
+          97
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          515,
+          66
+        ],
+        [
+          560,
+          91
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          404,
+          12
+        ],
+        [
+          448,
+          39
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          283,
+          58
+        ],
+        [
+          330,
+          85
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          464,
+          506
+        ],
+        [
+          513,
+          534
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          290,
+          64
+        ],
+        [
+          343,
+          91
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "goal",
+      "points": [
+        [
+          536,
+          0
+        ],
+        [
+          549,
+          32
+        ]
+      ],
+      "shape_type": "rectangle"
+    }
+  ],
+  "flags": {}
+}

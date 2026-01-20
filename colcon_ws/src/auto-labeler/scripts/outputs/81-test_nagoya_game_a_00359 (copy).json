@@ -1,0 +1,147 @@
+{
+  "imageHeight": 600,
+  "imageWidth": 800,
+  "shapes": [
+    {
+      "label": "ball",
+      "points": [
+        [
+          412,
+          384
+        ],
+        [
+          448,
+          420
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "T",
+      "points": [
+        [
+          117,
+          392
+        ],
+        [
+          159,
+          416
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "goal",
+      "points": [
+        [
+          495,
+          139
+        ],
+        [
+          525,
+          319
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          545,
+          388
+        ],
+        [
+          585,
+          411
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "L",
+      "points": [
+        [
+          62,
+          290
+        ],
+        [
+          106,
+          315
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "goal",
+      "points": [
+        [
+          254,
+          111
+        ],
+        [
+          277,
+          310
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          762,
+          383
+        ],
+        [
+          799,
+          412
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "L",
+      "points": [
+        [
+          127,
+          302
+        ],
+        [
+          174,
+          329
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "T",
+      "points": [
+        [
+          118,
+          292
+        ],
+        [
+          164,
+          318
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          622,
+          316
+        ],
+        [
+          663,
+          341
+        ]
+      ],
+      "shape_type": "rectangle"
+    }
+  ],
+  "flags": {}
+}

@@ -1,0 +1,49 @@
+{
+  "imageHeight": 1080,
+  "imageWidth": 1920,
+  "shapes": [
+    {
+      "label": "ball",
+      "points": [
+        [
+          416,
+          584
+        ],
+        [
+          673,
+          828
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "T",
+      "points": [
+        [
+          1526,
+          507
+        ],
+        [
+          1597,
+          560
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "L",
+      "points": [
+        [
+          864,
+          537
+        ],
+        [
+          931,
+          575
+        ]
+      ],
+      "shape_type": "rectangle"
+    }
+  ],
+  "flags": {}
+}

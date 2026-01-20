@@ -1,0 +1,63 @@
+{
+  "imageHeight": 360,
+  "imageWidth": 640,
+  "shapes": [
+    {
+      "label": "ball",
+      "points": [
+        [
+          168,
+          86
+        ],
+        [
+          209,
+          126
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "T",
+      "points": [
+        [
+          14,
+          27
+        ],
+        [
+          44,
+          45
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          562,
+          77
+        ],
+        [
+          593,
+          94
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "X",
+      "points": [
+        [
+          65,
+          183
+        ],
+        [
+          98,
+          202
+        ]
+      ],
+      "shape_type": "rectangle"
+    }
+  ],
+  "flags": {}
+}

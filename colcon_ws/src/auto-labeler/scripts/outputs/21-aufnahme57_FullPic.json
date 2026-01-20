@@ -1,0 +1,77 @@
+{
+  "imageHeight": 360,
+  "imageWidth": 640,
+  "shapes": [
+    {
+      "label": "ball",
+      "points": [
+        [
+          253,
+          151
+        ],
+        [
+          297,
+          193
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "L",
+      "points": [
+        [
+          455,
+          30
+        ],
+        [
+          486,
+          48
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "goal",
+      "points": [
+        [
+          319,
+          0
+        ],
+        [
+          347,
+          172
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "T",
+      "points": [
+        [
+          430,
+          57
+        ],
+        [
+          461,
+          74
+        ]
+      ],
+      "shape_type": "rectangle"
+    },
+    {
+      "label": "L",
+      "points": [
+        [
+          584,
+          95
+        ],
+        [
+          616,
+          113
+        ]
+      ],
+      "shape_type": "rectangle"
+    }
+  ],
+  "flags": {}
+}

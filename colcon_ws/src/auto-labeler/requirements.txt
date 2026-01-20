@@ -1,0 +1,4 @@
+gradio
+torch
+opencv-python
+numpy
