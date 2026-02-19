@@ -36,7 +36,7 @@ class ParticleFilterNode(Node):
         super().__init__('particle_filter')
         #FOV
         self.fov_rad = math.radians(53.7)
-        self.sigma_angle = math.radians(6.0)
+        self.sigma_angle = math.radians(5.0)
         # 0:ball 1:goal, 2:robot, 3:L, 4:T, 5:X 
         self.map_landmarks = {
             1: [(0.5, 1.4),
@@ -96,7 +96,7 @@ class ParticleFilterNode(Node):
         alpha3: Noise in translation caused by translation.
         alpha4: Noise in translation caused by rotation. 
         '''
-        self.alphas = [0.001, 0.001, 0.001, 0.001]
+        self.alphas = [0.0001, 0.001, 0.0035, 0.001]
         # Initialization
         self.is_moving = False
         self.init_particles()
@@ -142,7 +142,7 @@ class ParticleFilterNode(Node):
         u_t = self.calculate_deltas(curr_pose, self.last_odom_pose)
         
         # 2. Update particles only if there is significant motion
-        if u_t[1] > 0.002 or abs(u_t[0] + u_t[2]) > 0.02:
+        if u_t[1] > 0.02 or abs(u_t[0] + u_t[2]) > 0.02:
             self.is_moving = True
             new_particles = []
             for p in self.particles:
@@ -172,20 +172,20 @@ class ParticleFilterNode(Node):
 
     def sample_motion_model(self, u_t, x_prev, a):
         dr1, dt, dr2 = u_t
-        # Variances
+        # Standard Deviation
         s1 = math.sqrt(a[0]*dr1**2 + a[1]*dt**2)
         st = math.sqrt(a[2]*dt**2 + a[3]*dr1**2 + a[3]*dr2**2)
         s2 = math.sqrt(a[0]*dr2**2 + a[1]*dt**2)
         
         # Sample with noise
-        h_r1 = dr1 - random.gauss(0, s1)
-        h_t  = dt  - random.gauss(0, st)
-        h_r2 = dr2 - random.gauss(0, s2)
+        h_dr1 = dr1 - random.gauss(0, s1)
+        h_dt  = dt  - random.gauss(0, st)
+        h_dr2 = dr2 - random.gauss(0, s2)
         
         # New pose
-        x_new = x_prev[0] + h_t * math.cos(x_prev[2] + h_r1)
-        y_new = x_prev[1] + h_t * math.sin(x_prev[2] + h_r1)
-        theta_new = x_prev[2] + h_r1 + h_r2
+        x_new = x_prev[0] + h_dt * math.cos(x_prev[2] + h_dr1)
+        y_new = x_prev[1] + h_dt * math.sin(x_prev[2] + h_dr1)
+        theta_new = x_prev[2] + h_dr1 + h_dr2
         # CLAMPING: No permitir que salgan de los límites
         # Usamos un pequeño margen (0.1) por si los landmarks están fuera
         x_new = max(FIELD_X_MIN - 0.1, min(x_new, FIELD_X_MAX + 0.1))
@@ -205,14 +205,26 @@ class ParticleFilterNode(Node):
                 weight = self.similarity_function(preds, self.latest_observations)
                 new_weights.append(weight)
 
-            #  NORMALIZAR PESOS (Total Probability Theorem) 
-            sum_w = sum(new_weights) + 1e-9
-            self.weights = [w / sum_w for w in new_weights]
-
             #Check average of weights
             avg_weight = sum (new_weights)/len(new_weights)
             max_weight = max (new_weights)
-
+            # DETECCIÓN DE DIVERGENCIA SEVERA
+            if max_weight < 1e-3:  # Pesos muy bajos
+                self.get_logger().warn(
+                    f"Divergence detected - Max weight: {max_weight:.6f}"
+                )
+                # Inyectar % de partículas aleatorias
+                num_random = int(0.2 * self.num_particles)
+                for i in range(num_random):
+                    self.particles[i] = [
+                        random.uniform(-self.field_x/2, self.field_x/2),
+                        random.uniform(-self.field_y/2, self.field_y/2),
+                        random.uniform(-math.pi, math.pi)
+                    ]
+                self.get_logger().info(f"Looking for position...")
+            #  NORMALIZAR PESOS (Total Probability Theorem) 
+            sum_w = sum(new_weights) + 1e-9
+            self.weights = [w / sum_w for w in new_weights]
             #----LOGS----
             self.get_logger().info(f"Average weight : {avg_weight:.4f} | Max weight : {max_weight:.4f}")
 
@@ -249,7 +261,7 @@ class ParticleFilterNode(Node):
         self.particles_pub.publish(msg)
         
         # Log para saber qué tan dispersas están
-        self.get_logger().info(f"Publicadas {len(self.particles)} partículas.")
+        #self.get_logger().info(f"Publicadas {len(self.particles)} partículas.")
 
     def resample(self, robot_is_moving):
         #Table 4.4 pag 110 PR Algorithm Low_variance_sampler(Xt , Wt ):
@@ -279,11 +291,11 @@ class ParticleFilterNode(Node):
             # LÍNEA 12: add x[i] to X_new
             p = self.particles[i]
             if not robot_is_moving:
-                jitter_xy = 0.002
-                jitter_theta = 0.01
+                jitter_xy = 0.0002
+                jitter_theta = 0.002
             else:
-                jitter_xy = 0.00001
-                jitter_theta = 0.00001
+                jitter_xy = 0.0
+                jitter_theta = 0.0
             
             nx = p[0] + random.gauss(0, jitter_xy)
             ny = p[1] + random.gauss(0, jitter_xy)
@@ -316,7 +328,7 @@ class ParticleFilterNode(Node):
 
     def similarity_function(self, predicted_dets, observations):
         if not observations or not predicted_dets:
-            return 1e-7
+            return 1e-8
         matched_errors = []
         matched_pred_indices = set()
         obs_idx = 0
@@ -337,7 +349,11 @@ class ParticleFilterNode(Node):
                 pred_idx += 1
         # bad particle
         if not matched_errors:
-            return 1e-7
+            return 1e-9
+
+        num_matches = len(matched_errors)
+        num_observations = len(observations)
+        num_predictions = len(predicted_dets)
         #------ Gaussian Similarity--------
         # error ~ 0 ; p_weight ~ 1
         similarity = 0.0
@@ -348,8 +364,38 @@ class ParticleFilterNode(Node):
             lklihood = -(err**2)/(2*var)
             #p. 152 ec 6.2 p(zt | xt , m)=KPIk=1 p(zkt | xt , m)
             similarity += lklihood
+        
+        avg_likelihood = similarity / num_matches
+        quality_score = math.exp(avg_likelihood)
+
+        # 2. NUEVO: Ratio de éxito basado en MATCHES sobre OBSERVACIONES
+        # Esto favorece explicar lo que vemos, no penaliza lo que no vemos
+        match_success = num_matches / num_observations
+        
+        # 3. Peso base = calidad × éxito en explicar observaciones
+        base_weight = quality_score * match_success
+        
+        # 4. PENALIZACIÓN MÁS SUAVE por observaciones no explicadas
+        # Toleramos que 1-2 observaciones no tengan predicción
+        obs_not_matched = num_observations - num_matches
+        
+        if obs_not_matched > 2:  # Tolerancia de 2 landmarks
+            # Penalización moderada (no exponencial)
+            miss_penalty = 0.5 ** (obs_not_matched - 2)
+            base_weight *= miss_penalty
+        pred_not_observed = num_predictions - num_matches
+        # Tolerancia: Es OK predecir más landmarks de los que ves
+        # (el detector puede fallar en detectar algunos)
+        if pred_not_observed > num_observations:
+            # Solo penalizar si hay DEMASIADAS predicciones extra
+            excess = pred_not_observed - num_observations
+            if excess > 2.5:  # Tolerancia de 3 landmarks extra
+                false_positive_penalty = 0.3 ** (excess - 3)
+                base_weight *= false_positive_penalty
+        
+        return max(min(base_weight, 1.0), 1e-10)
             # pag. 16 PR
-        return math.exp(similarity)
+        # return math.exp(similarity)
 
 def main():
     rclpy.init()
