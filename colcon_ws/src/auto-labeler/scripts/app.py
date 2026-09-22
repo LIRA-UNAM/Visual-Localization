@@ -15,8 +15,8 @@ parser.add_argument("--output", default="outputs", help="Output folder for JSONs
 args = parser.parse_args()
 
 MODEL_PATH = args.model
-IMAGE_FOLDER = args.images
-OUTPUT_DIR = args.output
+IMAGE_FOLDER = os.path.abspath(args.images)
+OUTPUT_DIR = os.path.abspath(args.output)
 IMAGES_PER_PAGE = 4
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -46,40 +46,52 @@ def annotate_and_save(img_path):
     shapes = []
     annotated = img.copy()
 
-    if results.boxes:
+    if results.boxes is not None and len(results.boxes) > 0:
         for box in results.boxes:
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
-            cls = int(box.cls[0])
-            label = model.names[cls]
+            # Convertir coordenadas a enteros nativos de Python
+            x1, y1, x2, y2 = [int(round(float(v))) for v in box.xyxy[0]]
+            cls_id = int(box.cls[0])
+            label = str(model.names[cls_id])
 
             cv2.rectangle(annotated, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(
-                annotated, label, (x1, y1 - 5),
+                annotated, label, (x1, max(y1 - 5, 15)),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2
             )
 
             shapes.append({
                 "label": label,
-                "points": [[x1, y1], [x2, y2]],
-                "shape_type": "rectangle"
+                "points": [
+                    [x1, y1],
+                    [x2, y2]
+                ],
+                "group_id": None,
+                "shape_type": "rectangle",
+                "flags": {}
             })
 
+    # Si el JSON se guarda en otra carpeta, calculamos la ruta relativa hacia la imagen
+    json_path_target = os.path.join(OUTPUT_DIR, os.path.splitext(os.path.basename(img_path))[0] + ".json")
+    rel_img_path = os.path.relpath(img_path, os.path.dirname(json_path_target))
+
     annotation = {
-        "imageHeight": h,
-        "imageWidth": w,
+        "version": "5.0.0",
+        "flags": {},
         "shapes": shapes,
-        "flags": {}
+        "imagePath": rel_img_path,
+        "imageData": None,
+        "imageHeight": int(h),
+        "imageWidth": int(w)
     }
 
-    base = os.path.splitext(os.path.basename(img_path))[0]
-    with open(os.path.join(OUTPUT_DIR, base + ".json"), "w") as f:
-        json.dump(annotation, f, indent=2)
+    with open(json_path_target, "w", encoding="utf-8") as f:
+        json.dump(annotation, f, indent=2, ensure_ascii=False)
 
     return cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB)
 
 def label_full_folder():
     if not os.path.isdir(IMAGE_FOLDER):
-        return "❌ Invalid image folder"
+        return "Invalid image folder"
 
     paths = sorted([
         os.path.join(IMAGE_FOLDER, f)
@@ -88,18 +100,21 @@ def label_full_folder():
     ])
 
     if len(paths) == 0:
-        return "⚠️ No images found"
+        return "No images found"
 
     for p in paths:
         annotate_and_save(p)
 
-    return f"✅ Labeled {len(paths)} images<br>📁 JSON saved in <code>{OUTPUT_DIR}</code>"
+    return f"Labeled {len(paths)} images\n📁 JSON saved in {OUTPUT_DIR}"
 
 # =========================
-# 
+# Paginación UI
 # =========================
 def load_images():
     global image_paths, current_page
+    if not os.path.isdir(IMAGE_FOLDER):
+        return [None, None, None, None]
+        
     image_paths = sorted([
         os.path.join(IMAGE_FOLDER, f)
         for f in os.listdir(IMAGE_FOLDER)
@@ -150,21 +165,13 @@ with gr.Blocks(title="YOLOv8 Auto Labeler") as demo:
     with gr.Row():
         prev_btn = gr.Button("⬅️ Previous")
         next_btn = gr.Button("Next ➡️")
+        
     label_all_btn = gr.Button("🏷️ Label full folder")
     status_box = gr.Markdown()
 
-    load_btn.click(load_images,
-                   outputs=[img1, img2, img3, img4])
-
-    next_btn.click(next_page,
-                   outputs=[img1, img2, img3, img4])
-
-    prev_btn.click(prev_page,
-                   outputs=[img1, img2, img3, img4])
-    label_all_btn.click(
-        fn=label_full_folder,
-        outputs=status_box
-    )
-
+    load_btn.click(load_images, outputs=[img1, img2, img3, img4])
+    next_btn.click(next_page, outputs=[img1, img2, img3, img4])
+    prev_btn.click(prev_page, outputs=[img1, img2, img3, img4])
+    label_all_btn.click(fn=label_full_folder, outputs=status_box)
 
 demo.launch()
